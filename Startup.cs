@@ -1,6 +1,16 @@
 ﻿
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using System.IO.Pipelines;
 using System.Text.Json.Serialization;
+using WebApiAutores.Middlewares;
 
 namespace WebApiAutores;
 public class Startup
@@ -29,8 +39,21 @@ public class Startup
         });
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
     {
+
+        app.UseMiddleware<LoguearRespuestaHTTPMiddleware>();
+
+        app.Map("/ruta1", app =>
+         {
+             app.Run(async contexto =>
+             {
+                 await contexto.Response.WriteAsync("Estoy interceptando la tubería");
+             });
+         });
+
+        
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();

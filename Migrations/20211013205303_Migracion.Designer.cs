@@ -9,8 +9,8 @@ using WebApiAutores;
 namespace WebApiAutores.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210828040446_Libros")]
-    partial class Libros
+    [Migration("20211013205303_Migracion")]
+    partial class Migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,9 @@ namespace WebApiAutores.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
